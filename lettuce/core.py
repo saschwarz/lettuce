@@ -21,6 +21,20 @@ import string
 import sys
 import unicodedata
 from copy import deepcopy
+import __builtin__
+if "all" not in __builtin__.__dict__:
+    def all(iterable):
+        for element in iterable:
+            if not element:
+                return False
+        return True
+if "any" not in __builtin__.__dict__:
+    def any(iterable):
+        for element in iterable:
+            if element:
+                return True
+        return False
+
 from lettuce import strings
 from lettuce import languages
 from lettuce.fs import FileSystem
@@ -108,7 +122,7 @@ class StepDefinition(object):
         self.step = step
 
     def __call__(self, *args, **kw):
-        """Method that actually wrapps the call to step definition
+        """Method that actually wraps the call to the step definition
         callback. Sends step object as first argument
         """
         try:
@@ -419,10 +433,9 @@ class Step(object):
                 steps_failed.append(step)
                 reasons_to_fail.append(step.why or ReasonToFail(e))
 
-            finally:
-                all_steps.append(step)
-                if run_callbacks:
-                    call_hook('after_each', 'step', step)
+            all_steps.append(step)
+            if run_callbacks:
+                call_hook('after_each', 'step', step)
 
         return (all_steps, steps_passed, steps_failed, steps_undefined, reasons_to_fail)
 

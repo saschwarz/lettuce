@@ -248,11 +248,11 @@ def test_run_controller():
     assert_equals(rc.want_run_scenario(s), True)
     # Try with some positive delegates
 
-    class PositiveDelegate():
+    class PositiveDelegate(object):
         def want_run_scenario(self, scenario):
             return True
 
-    class NegativeDelegate():
+    class NegativeDelegate(object):
         def want_run_scenario(self, scenario):
             return False
 

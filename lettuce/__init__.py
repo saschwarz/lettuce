@@ -124,18 +124,18 @@ class Runner(object):
 
         failed = False
         try:
-            for filename in features_files:
-                feature = Feature.from_file(filename)
-                results.append(feature.run(self.scenarios, self.run_controller))
-        except exceptions.LettuceSyntaxError, e:
-            sys.stderr.write(e.msg)
-            failed = True
-        except:
-            e = sys.exc_info()[1]
-            print "Died with "+str(e)
-            traceback.print_exc()
-            failed = True
-
+            try:
+                for filename in features_files:
+                    feature = Feature.from_file(filename)
+                    results.append(feature.run(self.scenarios, self.run_controller))
+            except exceptions.LettuceSyntaxError, e:
+                sys.stderr.write(e.msg)
+                failed = True
+            except:
+                e = sys.exc_info()[1]
+                print "Died with "+str(e)
+                traceback.print_exc()
+                failed = True
         finally:
             if failed:
                 raise SystemExit(2)

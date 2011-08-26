@@ -52,9 +52,9 @@ def test_terrain_import_exception():
     mox.ReplayAll()
 
     try:
-        reload(lettuce)
-    except SystemExit:
-        mox.VerifyAll()
-
+        try:
+            reload(lettuce)
+        except SystemExit:
+            mox.VerifyAll()
     finally:
         mox.UnsetStubs()

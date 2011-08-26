@@ -15,8 +15,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import sys
+import __builtin__
 import threading
 import traceback
+
+if "all" not in __builtin__.__dict__:
+    def all(iterable):
+        for element in iterable:
+            if not element:
+                return False
+        return True
 
 world = threading.local()
 world._set = False

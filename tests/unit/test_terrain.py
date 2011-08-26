@@ -218,11 +218,9 @@ def test_world_should_be_able_to_absorb_lambdas():
 def test_world_should_be_able_to_absorb_classs():
    u"world should be able to absorb classs"
    assert not hasattr(world, 'MyClass')
-
-   @world.absorb
-   class MyClass:
+   class MyClass(object):
        pass
-
+   world.absorb(MyClass)
    assert hasattr(world, 'MyClass')
    assert_equals(world.MyClass, MyClass)
 

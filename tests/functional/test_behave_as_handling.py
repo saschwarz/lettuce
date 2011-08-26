@@ -113,7 +113,7 @@ def test_failing_tables_behave_as_feature():
     '      File "%(lettuce_core_file)s", line %(call_line)d, in __call__\n'
     '        ret = self.function(self.step, *args, **kw)\n'
     '      File "%(step_file)s", line 29, in multiply_X_and_Y_into_the_calculator\n'
-    '        \'\'\'.format(x, y))\n'
+    '        \'\'\' %% (x, y))\n'
     '      File "%(lettuce_core_file)s", line %(call_line)d, in __call__\n'
     '        assert not steps_failed, steps_failed[0].why.exception\n'
     '    AssertionError: Die, die, die my darling!\n'

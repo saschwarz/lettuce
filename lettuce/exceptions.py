@@ -18,14 +18,15 @@ import traceback
 
 class NoDefinitionFound(Exception):
     """ Exception raised by lettuce.core.Step, when trying to solve a
-    Step, but does not find a suitable step definition.
+    Step, but does not find a matching step definition.
 
-    This exception should never blow on user's face. It used merely yo
+    This exception should never be visible to the user. It is only used so
     lettuce can filter undefined steps.
     """
     def __init__(self, step):
         self.step = step
-        super(NoDefinitionFound, self).__init__(
+        # old school for python 2.4
+        Exception.__init__(self,
             'The step r"%s" is not defined' % self.step.sentence
         )
 

@@ -21,7 +21,11 @@ from lettuce import registry
 from lettuce.core import Step
 from lettuce.core import Feature
 from lettuce.exceptions import StepLoadingError
-from nose.tools import *
+from nose.tools import assert_equals, with_setup, assert_false, assert_raises, assert_equal
+try:
+    all
+except NameError:
+    from lettuce.core import all
 
 FEATURE1 = """
 Feature: Count steps ran
@@ -101,8 +105,6 @@ Feature: When using behave_as, the new steps have the same scenario
 
 def step_runner_environ():
     "Make sure the test environment is what is expected"
-
-    from lettuce import registry
     registry.clear()
 
     @step('I have a defined step')
@@ -127,7 +129,6 @@ def step_runner_environ():
 
 
 def step_runner_cleanup():
-    from lettuce import registry
     registry.clear()
 
 @with_setup(step_runner_environ)
@@ -140,9 +141,9 @@ def test_can_count_steps_and_its_states():
 
     scenario_result = feature_result.scenario_results[0]
     assert_equals(len(scenario_result.steps_passed), 1)
-    assert_equals(len(scenario_result.steps_failed), 1)
     assert_equals(len(scenario_result.steps_undefined), 1)
     assert_equals(len(scenario_result.steps_skipped), 1)
+    assert_equals(len(scenario_result.steps_failed), 1)
     assert_equals(scenario_result.total_steps, 4)
 
 @with_setup(step_runner_environ)
@@ -175,7 +176,7 @@ def test_can_figure_out_why_has_failed():
     assert_equals(failed_step.why.cause, 'It should fail')
     assert 'Traceback (most recent call last):' in failed_step.why.traceback
     assert 'AssertionError: It should fail' in failed_step.why.traceback
-    assert_equals(type(failed_step.why.exception), AssertionError)
+    assert isinstance(failed_step.why.exception, AssertionError)
 
 @with_setup(step_runner_environ)
 def test_skipped_steps_can_be_retrieved_as_steps():
@@ -223,7 +224,7 @@ def test_steps_are_aware_of_its_definitions():
 
     step1 = scenario_result.steps_passed[0]
 
-    assert_equals(step1.defined_at.line, 109)
+    assert_equals(step1.defined_at.line, 111)
     assert_equals(step1.defined_at.file, core.fs.relpath(__file__.rstrip("c")))
 
 @with_setup(step_runner_environ)

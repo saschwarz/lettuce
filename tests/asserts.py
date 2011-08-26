@@ -36,7 +36,10 @@ def prepare_stderr():
     sys.stderr = std
 
 def assert_lines(original, expected):
-    original = original.decode('utf-8') if isinstance(original, basestring) else original
+    if isinstance(original, basestring):
+        original = original.decode('utf-8')
+    else:
+        original
     assert_lines_unicode(original, expected)
 
 def assert_lines_unicode(original, expected):
@@ -58,7 +61,6 @@ def assert_lines_with_traceback(one, other):
             filename = found.group(1)
             params = filename, line1
             assert filename in line1, error % params
-
         else:
             assert_unicode_equals(line1, line2)
 
