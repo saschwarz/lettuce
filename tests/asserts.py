@@ -17,7 +17,7 @@
 import re
 import sys
 from StringIO import StringIO
-from nose.tools import assert_equals
+from nose.tools import assert_equals, assert_not_equals
 from lettuce import registry
 from difflib import Differ
 
@@ -69,7 +69,6 @@ def assert_lines_with_traceback(one, other):
 def assert_unicode_equals(original, expected):
     if isinstance(original, basestring):
         original = original.decode('utf-8')
-
     assert_equals(original, expected)
 
 def assert_stderr(expected):

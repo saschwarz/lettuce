@@ -1,5 +1,5 @@
 # lettuce
-> Version 0.1.27 - barium
+> Version 0.1.32 - barium
 
 ## On release names
 
@@ -47,6 +47,8 @@ all them are used within lettuce tests
     > [sudo] pip install sphinx
 * [lxml](http://codespeak.net/lxml/)
     > [sudo] pip install lxml
+* [tornado](http://tornadoweb.org/)
+    > [sudo] pip install tornado
 * [django](http://djangoproject.com/)
     > [sudo] pip install django
 
@@ -62,8 +64,9 @@ all them are used within lettuce tests
 
 ## keep in mind
 
-that lettuce is a testing software, patches and pull requests must
-come with automated tests, and if suitable, with proper documentation.
+![your lack of tests if disturbing the force](http://farm3.static.flickr.com/2248/2282734669_a7f431e660_o.jpg)
+
+### that lettuce is a testing software, patches and pull requests must come with automated tests, and if suitable, with proper documentation.
 
 # mailing list
 

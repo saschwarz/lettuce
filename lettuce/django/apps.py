@@ -18,11 +18,16 @@
 from os.path import join, dirname
 from django.utils.importlib import import_module
 from django.conf import settings
+import __builtin__
+if "any" not in __builtin__.__dict__:
+    from lettuce.backports import any
+
 
 def _filter_bultins(module):
     "returns only those apps that are not builtin django.contrib"
     name = module.__name__
     return not name.startswith("django.contrib") and name != 'lettuce.django'
+
 
 def _filter_configured_apps(module):
     "returns only those apps that are in django.conf.settings.LETTUCE_APPS"
@@ -35,6 +40,7 @@ def _filter_configured_apps(module):
 
     return app_found
 
+
 def _filter_configured_avoids(module):
     "returns apps that are not within django.conf.settings.LETTUCE_AVOID_APPS"
     run_app = False
@@ -45,8 +51,10 @@ def _filter_configured_avoids(module):
 
     return not run_app
 
+
 def get_apps():
     return map(import_module, settings.INSTALLED_APPS)
+
 
 def harvest_lettuces(only_the_apps=None, avoid_apps=None, path="features"):
     """gets all installed apps that are not from django.contrib
@@ -56,6 +64,7 @@ def harvest_lettuces(only_the_apps=None, avoid_apps=None, path="features"):
     apps = get_apps()
 
     if isinstance(only_the_apps, tuple) and any(only_the_apps):
+
         def _filter_only_specified(module):
             return module.__name__ in only_the_apps
         apps = filter(_filter_only_specified, apps)
@@ -65,6 +74,7 @@ def harvest_lettuces(only_the_apps=None, avoid_apps=None, path="features"):
         apps = filter(_filter_configured_avoids, apps)
 
     if isinstance(avoid_apps, tuple) and any(avoid_apps):
+
         def _filter_avoid(module):
             return module.__name__ not in avoid_apps
 

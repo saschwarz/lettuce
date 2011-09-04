@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import traceback
 
+
 class NoDefinitionFound(Exception):
     """ Exception raised by lettuce.core.Step, when trying to solve a
     Step, but does not find a matching step definition.
@@ -30,6 +31,7 @@ class NoDefinitionFound(Exception):
             'The step r"%s" is not defined' % self.step.sentence
         )
 
+
 class ReasonToFail(object):
     """ Exception that contains detailed information about a
     AssertionError raised within a step definition.  With these data
@@ -39,6 +41,7 @@ class ReasonToFail(object):
         self.exception = exc
         self.cause = unicode(exc)
         self.traceback = traceback.format_exc(exc)
+
 
 class LettuceSyntaxError(SyntaxError):
     def __init__(self, filename, string):

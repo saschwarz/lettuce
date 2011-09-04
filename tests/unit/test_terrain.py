@@ -16,7 +16,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from mox import Mox
 from nose.tools import assert_equals
-
 from lettuce import step
 from lettuce.terrain import after
 from lettuce.terrain import before

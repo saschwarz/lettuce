@@ -34,54 +34,29 @@ def spew(name):
         delattr(world, name)
         return item
 
-class main(object):
-    @classmethod
-    def all(cls, function):
-        CALLBACK_REGISTRY.append_to('all', cls.__name__, function)
-        return function
+class Main(object):
+    def __init__(self, callback):
+        self.name = callback
 
     @classmethod
-    def each_step(cls, function):
-        CALLBACK_REGISTRY.append_to('step', "%s_each" % cls.__name__, function)
-        return function
+    def _add_method(cls, name, where, when):
+        def method(self, fn):
+            full_name = "%" in when and when % (self.name) or when
+            CALLBACK_REGISTRY.append_to(where, full_name, fn)
+        method.__name__ = method.fn_name = name
+        setattr(cls, name, method)
 
-    @classmethod
-    def each_scenario(cls, function):
-        CALLBACK_REGISTRY.append_to('scenario', "%s_each" % cls.__name__, function)
-        return function
+for name, where, when in (
+        ('all', 'all', '%s'),
+        ('each_step', 'step', '%s_each'),
+        ('each_scenario', 'scenario', '%s_each'),
+        ('each_feature', 'feature', '%s_each'),
+        ('harvest', 'harvest', '%s'),
+        ('each_app', 'app', '%s_each'),
+        ('runserver', 'runserver', '%s'),
+        ('handle_request', 'handle_request', '%s'),
+        ('outline', 'scenario', 'outline')):
+    Main._add_method(name, where, when)
 
-    @classmethod
-    def each_feature(cls, function):
-        CALLBACK_REGISTRY.append_to('feature', "%s_each" % cls.__name__, function)
-        return function
-
-    @classmethod
-    def harvest(cls, function):
-        CALLBACK_REGISTRY.append_to('harvest', cls.__name__, function)
-        return function
-
-    @classmethod
-    def each_app(cls, function):
-        CALLBACK_REGISTRY.append_to('app', "%s_each" % cls.__name__, function)
-        return function
-
-    @classmethod
-    def runserver(cls, function):
-        CALLBACK_REGISTRY.append_to('runserver', cls.__name__, function)
-        return function
-
-    @classmethod
-    def handle_request(cls, function):
-        CALLBACK_REGISTRY.append_to('handle_request', cls.__name__, function)
-        return function
-
-    @classmethod
-    def outline(cls, function):
-        CALLBACK_REGISTRY.append_to('scenario', "outline", function)
-        return function
-
-class before(main):
-    pass
-
-class after(main):
-    pass
+before = Main('before')
+after = Main('after')
